@@ -1,0 +1,108 @@
+
+Git本地的相关配置文件:
+$ cat .git/config
+
+一、Git本地基本用法
+
+1、插件新的仓库：git init ./
+2、Git设置：
+	$ git config --add user.email"Jiawq@nowada.com"
+	$ git config --add user.name"Jiawq"
+	讲此设置写入仓库目录的.git/config文件中,执行git config命令后就可以写入信息;
+3、添加文件到仓库中：
+	$ git add hello.c
+	$ git commit
+4、修改并提交文件：
+	$ git commit -a
+	(注:新创建的文件直接使用此命令不会被提交)
+5、确认工作区的状态：
+	$ git status
+	确认文件是在Git的管理范围：
+	$ git ls-files
+	显示修改记录以及差异(缓存区与当前工作区的差别)：
+	$ git diff
+	显示最新提交与当前工作区的差别：
+	$ git diff HEAD
+6、参照提交记录(3次)：
+	$ git log
+	确认提交的内容：
+	$ git log -p
+	
+7、修改提交：
+	$ git revert HEAD
+	
+8、为提交加标签：
+	$ git tag ver1 HEAD~1
+	$ git tag -1
+	
+9、创建分支：
+	$ git branch ver1x ver1
+	$ git branch
+
+10、release命令：
+	$ git release master
+	
+11、参照图形记录(gitk)：
+	$ git log --graph
+	
+
+二、与远程仓库进行共同作业：
+1、复制仓库:
+	①从远程复制仓库:
+	$ git clone osbgit@192.168.1.91:RK3066_system.git
+	②本地复制全部目录及属性：
+	$ git clone local dest
+2、追踪分支：
+	$ git branch -r
+	origin/HEAD -> origin/master
+	origin/mas
+	origin/master
+	
+	确认远程仓库信息:
+	$ git remote show
+	
+3、与远程仓库同步：
+	$ git commit -a
+	$ git checkout master
+	$ git pull
+	$ git log
+	
+	
+三、其它常用命令：
+
+	$ git push		//直接将修改传递到远程仓库
+	$ git fetch		//从远程仓库将修改抓取到追踪分支
+	$ git status
+	$ git log -2
+	$ git format-patch -1 a5729141a23bbad6c17e3bff5e084ebadf70ded3
+	$ git show
+	$ git am .patch
+	$ vim -d a.c b.c
+	$ git reset 11abed6aac7c8fe2b6f42e6f8542ff7ce69f8574	//回滚到指定版本
+	$ git reset --hard 2396179c7df84a77e7834e23723e5bb0dfd40ab1	//回滚到指定版本(会清除之前的缓存文件的修改内容)
+	$ git reset --soft c0234d86dc098aba4ebd7f18803520a1dfc77b0e	//回滚到指定版本(不会清除之前缓存文件，可以用于提交缓存后又想做修改，但是又不想变version的情况)
+	撤消后，git log无法看到撤消的commit历史，但可以用下面命令看到：
+	$ git reflog
+	$ git checkout和git reset --hard的区别在于：
+	$ git checkout .							# 清除本地更改，但不清除index。举例来说，之前git add但没commit的作用还在。
+	$ git reset --hard HEA						# 清除本地更改，包括index。所以git add过的也清除了。
+	$ git checkout kernel
+	
+	
+	$ git config user.name <your name>  		#设置用户名
+	$ git config user.email <your mail> 		#设置用户邮箱
+	$ git config core.editor vim
+	$ git config core.paper “less -N”
+	$ git config color.diff true
+	$ git config alias.co checkout      		#表示git co代表gitcheckout.
+	$ git var -l                        		#可以查看已经设置的配置
+	$ git commit --amend						#修改最后一次提交的信息(未PUSH过)
+	
+	
+	$ git log --pretty=oneline					#以精简状态查看提交
+	$ git config --global color.ui true			#设置颜色标记
+	$ git clean -fd								#清除工作区当前的改动(清除尚未纳入版本库的文件和目录)
+	$ git archive -o latest.tar.gz HEAD			#基于最新提交建立归档文件latest.tar.gz
+	$ git tag -m "leave a point" old_practic	#做标签标记
+	$ git commit --amend						#重置最近一次commit提交信息
+	$ git cherry-pic							#用于把另一个本地分支的commit修改应用到当前分支(可用tag标记索引实现/"重放")
